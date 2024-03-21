@@ -4,7 +4,7 @@ from scraping.items import PesquisadoresItem
 
 
 class Spider(scrapy.Spider):
-    name = "pesquisadores"
+    name = 'pesquisadores'
 
     custom_settings = {
         'FEEDS': {
