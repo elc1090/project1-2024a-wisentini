@@ -7,8 +7,9 @@ class PesquisadoresItem(scrapy.Item):
     ano = scrapy.Field()
     areas = scrapy.Field()
     projetos = scrapy.Field()
-    url_imagem = scrapy.Field()
     url_perfil = scrapy.Field()
+    image_urls = scrapy.Field()
+    images = scrapy.Field()
 
 
 class PesquisadorItem(scrapy.Item):

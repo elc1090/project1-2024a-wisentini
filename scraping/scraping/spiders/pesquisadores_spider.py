@@ -3,17 +3,24 @@ import scrapy
 from scraping.items import PesquisadoresItem
 
 
-class Spider(scrapy.Spider):
+class PesquisadoresSpider(scrapy.Spider):
     name = 'pesquisadores'
 
     custom_settings = {
+        'USER_AGENT': 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; http://www.google.com/bot.html) Chrome/W.X.Y.Z Safari/537.36',
+        'ROBOTSTXT_OBEY': False,
         'FEEDS': {
             'data/pesquisadores.json': {
                 'format': 'json',
                 'encoding': 'utf-8',
+                'fields': ['slug', 'nome', 'ano', 'areas', 'projetos', 'url_perfil'],
                 'overwrite': True
             }
-        }
+        },
+        'ITEM_PIPELINES': {
+            'scraping.pipelines.CustomImagesPipeline': 1
+        },
+        'IMAGES_STORE': 'data/images'
     }
 
     def start_requests(self):
@@ -43,6 +50,6 @@ class Spider(scrapy.Spider):
                 ano=int(pesquisador.xpath('@data-item-year').get()),
                 areas=[area.strip() for area in pesquisador.xpath('.//*[@class="areas-pesquisador"]/text()').get().split('/')],
                 projetos=projetos,
-                url_imagem=pesquisador.xpath('.//*[@class="serra-thumb-portfolio"]/img/@src').get(),
-                url_perfil=pesquisador.xpath('a/@href').get()
+                url_perfil=pesquisador.xpath('a/@href').get(),
+                image_urls=[pesquisador.xpath('.//*[@class="serra-thumb-portfolio"]/img/@src').get()]
             )

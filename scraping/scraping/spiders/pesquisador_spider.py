@@ -4,7 +4,7 @@ import json
 from scraping.items import PesquisadorItem
 
 
-class Teste(scrapy.Spider):
+class PesquisadorSpider(scrapy.Spider):
     name = 'pesquisador'
 
     custom_settings = {
